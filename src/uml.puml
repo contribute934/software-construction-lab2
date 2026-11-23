@@ -1,0 +1,44 @@
+@startuml
+abstract class Exercise {
+  # static RANDOM : Random
+  # operands : int[]
+  # operators : char[]
+  # answer : int
+  + {abstract} generate()
+  + stepResults() : List<Integer>
+  + evaluate() : int
+  + checkConstraints() : boolean
+  + getQuestionText() : String
+  + getAnswer() : int
+}
+class TwoOperandExercise {
+  + static ADD / SUB / MUL / DIV : int
+  - mode : int
+  + generate()
+}
+class ThreeOperandExercise {
+  + static ADD / SUB / MUL / DIV / MIXED : int
+  - mode : int
+  + generate()
+}
+class ExerciseGenerator {
+  + static TYPE_NAMES : String[]
+  + createOne(type : int) : Exercise
+  + generateBatch(type, count) : List<Exercise>
+}
+class CsvExporter {
+  + static formatGrid(list, columns, withAnswer) : String
+  + static save(path, list) : void
+}
+class Main {
+  + static main(args : String[])
+}
+class ExerciseTest {
+}
+Exercise <|-- TwoOperandExercise
+Exercise <|-- ThreeOperandExercise
+ExerciseGenerator ..> Exercise : <<create>>
+Main ..> ExerciseGenerator : <<use>>
+Main ..> CsvExporter : <<use>>
+ExerciseTest ..> Exercise : <<test>>
+@enduml
